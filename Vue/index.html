@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue入门</title>
+    <script src="./vue.js"></script>
+    <!-- 放在head标签中，不放在body标签中，可以避免页面抖屏现象。 -->
+</head>
+
+<body>
+    <!-- 挂载点，模板，实例之间的区别。 -->
+    <!-- 挂载点：实例里el属性后面的id对应的dom节点。Vue实例只会处理挂载点下面的内容。 -->
+    <!-- 模板：挂载点内部的内容叫做模板内容。模板有还可以放在Vue实例中template中编写。 -->
+<div id="root">
+    <h1 v-on:click="handleClick">Hello {{msg}}</h1>
+    <h1 @click="handleClick">Hello {{msg}}</h1>
+    <!-- 事件绑定：v-on -->
+    <h1>{{number}}</h1>
+    <!-- 插值表达式 -->
+    <h1 v-text="number"></h1>
+    <!-- v-text指令：h1的内容由v-text指定。还可以用v-html表示。 它们有什么区别？-->
+    <div v-text="content"></div>
+    <!-- <h1>1994</h1>：会被转义一次。 -->
+    <div v-html="content"></div>
+    <!-- 1994:没有被转义。 -->
+
+
+    <h1 v-bind:title="title">Hello {{msg}}</h1>
+    <h1 :title="title">Hello {{msg}}</h1>
+    <!-- 属性绑定：v-bind -->
+
+    <input v-model="title"/>
+    <div>{{title}}</div>
+    <!-- 双向数据绑定：v-model -->
+
+    姓<input v-model="firstName"/>
+    名<input v-model="lastName"/>
+    <div>{{fullName}}</div>
+    <div>{{count}}</div>
+
+    <div v-if="show">hello world</div>
+    <!-- v-show: display:none 适合频繁需要对这个div标签显示和隐藏使用 v-show。 -->
+    <button @click="handleClick2">toggle</button>
+
+    <ul>
+        <li v-for="(item, index) of list" :key="index">{{item}}</li>
+        <!-- :key可以提高渲染效率。key值要求每次循环都不同 -->
+    </ul>
+</div>
+<script>
+    // new Vue({
+    //     el: "#root", // el:Vue实例和哪一个dom节点做绑定,挂载点。
+    //     template: '<h1>Hello {{msg}}</h1>',
+    //     data:{ // 数据
+    //         msg: 'World'
+    //     }
+    // })
+    new Vue({
+        el: "#root", // el:Vue实例和哪一个dom节点做绑定,挂载点。
+        data:{ // 数据
+            msg: 'World',
+            number: 26,
+            content: "<h1>1994</h1>",
+            title: "this is hello world",
+            firstName: '',
+            lastName: '',
+            count: 0,
+            show: true,
+            list: [1, 2, 3]
+        },
+        computed: {
+            fullName: function() {
+                return this.firstName + ' ' + this.lastName 
+            }
+        },
+        watch: {
+            // firstName: function() {
+            //     this.count ++
+            // },
+            // lastName: function() {
+            //     this.count ++
+            // }
+            fullName: function() {
+                this.count ++
+            }
+        },
+        methods:{
+            handleClick: function() {
+                this.msg = '1994'
+            },
+            handleClick2: function(){
+                this.show = !this.show
+            }
+        }
+    })
+
+    // var dom = document.getElementById("root")
+    // dom.innerHTML = "Hello World"
+</script>
+</body>
+
+</html>
